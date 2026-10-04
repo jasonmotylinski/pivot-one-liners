@@ -1,5 +1,5 @@
-// Scott Galloway one-liners — extracted from Pivot transcripts (last ~5 weeks
-// of episodes; auto-captions, lightly cleaned of filler/false starts).
+// Scott Galloway one-liners — extracted from Pivot + Prof G Pod transcripts.
+// Auto-maintained by pivot-backfill: hand-curated + auto-promoted quotes.
 const QUOTES = [
   { text: "Not only OpenAI, Nvidia, and Anthropic are really fragile right now.", topic: "AI" },
   { text: "Nvidia selling guardrails is like an arms dealer selling bulletproof vests.", topic: "AI" },
@@ -21,10 +21,10 @@ const QUOTES = [
   { text: "I predict that Mitch McConnell is dead.", topic: "Predictions" },
   { text: "Sydney Sweeney is probably going to be soon the youngest self-made female billionaire.", topic: "Culture" },
   { text: "It's an 80% chance he's lying, or 20% he's become so senile he believes his own mythology.", topic: "Politics" },
-  { text: "When you cave to your worst impulses, does it break you? I see all of these people as being broken — almost a billionaire psychosis.", topic: "Power" },
+  { text: "When you cave to your worst impulses, does it break you? I see all of these people as being broken \u2014 almost a billionaire psychosis.", topic: "Power" },
   { text: "There is a new wave of young people being like, 'No, this isn't cool, actually.'", topic: "Gen Z" },
-  { text: "It's not a real estate transaction. It's diplomacy and cooperation — recognizing that one of the greatest evolutions of mankind was realizing it's not about conquest.", topic: "Geopolitics" },
-  { text: "This is not 1800. Cars for Kids — it's not that song.", topic: "Culture" },
+  { text: "It's not a real estate transaction. It's diplomacy and cooperation \u2014 recognizing that one of the greatest evolutions of mankind was realizing it's not about conquest.", topic: "Geopolitics" },
+  { text: "This is not 1800. Cars for Kids \u2014 it's not that song.", topic: "Culture" },
   { text: "Broadcast media is a problem. And you, like many people, have a fetish for it.", topic: "Media" },
   { text: "Well, they're changing the name of the San Andreas fault to Joe Biden's fault.", topic: "Politics" },
   { text: "It's not being anti-tech that's dangerous. It's being anti-Trump.", topic: "Politics" },
@@ -38,6 +38,7 @@ const QUOTES = [
   { text: "I predict we're going to get slaughtered in the midterms.", topic: "Predictions" },
   { text: "It is not befitting of a president.", topic: "Politics" },
   { text: "Trump's really into aesthetics, you know.", topic: "Politics" },
-  { text: "He's just a constant — Trump is like, speaking of tsunamis.", topic: "Politics" },
-  { text: "The most important thing is talent.", topic: "Business" }
+  { text: "He's just a constant \u2014 Trump is like, speaking of tsunamis.", topic: "Politics" },
+  { text: "The most important thing is talent.", topic: "Business" },
+  { text: "These prediction by by Trump that he's doing great.", topic: "Politics" },
 ];
