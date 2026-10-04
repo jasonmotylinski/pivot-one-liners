@@ -1,0 +1,12 @@
+# Never commit — full Google/YouTube session
+cookies.txt
+
+# Data dirs (live on server, not in repo)
+transcripts/
+videos.txt
+dl_tmp*
+
+# Python
+__pycache__/
+*.pyc
+venv/
