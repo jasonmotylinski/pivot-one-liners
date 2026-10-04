@@ -23,8 +23,8 @@ COOKIES = BASE / "cookies.txt"   # optional YouTube session export; chmod 600
 SITE = Path("/home/jason/pivot-one-liners")
 QUOTES_JSON = SITE / "quotes_data.json"  # canonical data, committed with the site
 YTDLP = "/home/jason/.local/venvs/ytdl/bin/yt-dlp"
-MAX_FETCH = 10
-FETCH_GAP = 8          # seconds between downloads when unblocked
+MAX_FETCH = 3
+FETCH_GAP = 45         # seconds between downloads; 8s bursts trip YouTube's rate limiter even with cookies
 MIN_SCORE = 9          # auto-promotion threshold
 MAX_NEW_PER_RUN = 15
 
