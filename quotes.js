@@ -43,4 +43,5 @@ const QUOTES = [
   { text: "These prediction by by Trump that he's doing great.", topic: "Politics" },
   { text: "Let's be clear. Elon Musk, in my view, can probably decide who the next president is.", topic: "Tech CEOs" },
   { text: "And then the golden law of stupidity here, Trump is trying to cut NASA's funding by more than 20% this year.", topic: "Politics" },
+  { text: "It's um I believe this is all Musk and Trump on their", topic: "Politics" },
 ];
