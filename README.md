@@ -25,6 +25,11 @@ Automated transcript backfill and quote extraction:
 python3 -m venv venv && source venv/bin/activate
 pip install -r pipeline/requirements.txt
 
+mkdir -p data/transcripts   # first run only
+
+# add episodes to fetch: one "id|date|title" line per episode, newest first
+$EDITOR data/videos.txt
+
 # one-shot extraction over local transcripts
 python pipeline/extract_candidates.py
 
@@ -32,7 +37,7 @@ python pipeline/extract_candidates.py
 python pipeline/backfill.py
 ```
 
-Everything lives in `./data/` (gitignored) — transcripts, the episode queue, cookies. Optional env overrides: `YT_DLP` (yt-dlp binary), `TG_BOT_TOKEN` / `TG_CHAT_ID` (Telegram notification; skipped when unset).
+Requires `node` on PATH (yt-dlp's JS solver for the bot-check). Everything lives in `./data/` (gitignored) — transcripts, the episode queue, cookies. Optional env overrides: `YT_DLP` (yt-dlp binary), `TG_BOT_TOKEN` / `TG_CHAT_ID` (Telegram notification; skipped when unset).
 
 Data lives in `./data/` (gitignored, never committed):
 
