@@ -41,4 +41,6 @@ const QUOTES = [
   { text: "He's just a constant \u2014 Trump is like, speaking of tsunamis.", topic: "Politics" },
   { text: "The most important thing is talent.", topic: "Business" },
   { text: "These prediction by by Trump that he's doing great.", topic: "Politics" },
+  { text: "Let's be clear. Elon Musk, in my view, can probably decide who the next president is.", topic: "Tech CEOs" },
+  { text: "And then the golden law of stupidity here, Trump is trying to cut NASA's funding by more than 20% this year.", topic: "Politics" },
 ];
