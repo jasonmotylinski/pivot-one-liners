@@ -31,7 +31,6 @@ const QUOTES = [
   { text: "The entire economy is really fragile because Trump has made everyone angry.", topic: "Economy" },
   { text: "It's not a sexy thing to do. You'd rather just have these ridiculous food fights.", topic: "Politics" },
   { text: "I'd look good in a top hat. Let's be clear.", topic: "Fashion" },
-  { text: "He doesn't need CNN's respect. He needs its attention.", topic: "Politics" },
   { text: "Canada buys more from us than the EU or China.", topic: "Trade" },
   { text: "You're an idiot. You know you're dumb. [on crypto bros still holding on]", topic: "Crypto" },
   { text: "New York or nowhere. I'm telling you, Kara.", topic: "NYC" },
