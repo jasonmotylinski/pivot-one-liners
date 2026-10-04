@@ -1,10 +1,5 @@
-# Never commit — full Google/YouTube session
-cookies.txt
-
-# Data dirs (live on server, not in repo)
-transcripts/
-videos.txt
-dl_tmp*
+# Local data dir — transcripts, episode queue, cookies, yt-dlp temp files (never committed)
+data/
 
 # Python
 __pycache__/

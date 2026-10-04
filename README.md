@@ -32,21 +32,23 @@ python pipeline/extract_candidates.py
 python pipeline/backfill.py
 ```
 
-Data lives outside the repo by design (never committed):
+Everything lives in `./data/` (gitignored) — transcripts, the episode queue, cookies. Optional env overrides: `YT_DLP` (yt-dlp binary), `TG_BOT_TOKEN` / `TG_CHAT_ID` (Telegram notification; skipped when unset).
+
+Data lives in `./data/` (gitignored, never committed):
 
 | Path | Contents |
 |---|---|
-| `/home/jason/pivot-backfill/transcripts/` | downloaded caption text, one file per video |
-| `/home/jason/pivot-backfill/videos.txt` | episode queue (`id\|date\|title`, newest first) |
-| `/home/jason/pivot-backfill/cookies.txt` | YouTube session export (chmod 600, never commit) |
+| `data/transcripts/` | downloaded caption text, one file per video |
+| `data/videos.txt` | episode queue (`id\|date\|title`, newest first) |
+| `data/cookies.txt` | YouTube session export (chmod 600, never commit) |
 
 ### Getting past YouTube's bot-check
 
 Anonymous requests from cloud IPs are hard-blocked. The working recipe:
 
 1. Export cookies from a YouTube-logged-in browser ("Get cookies.txt LOCALLY" extension)
-2. Save as `cookies.txt` next to the transcripts dir
-3. yt-dlp needs `--cookies cookies.txt --js-runtimes node --remote-components ejs:github`
+2. Save as `data/cookies.txt`
+3. yt-dlp needs `--cookies data/cookies.txt --js-runtimes node --remote-components ejs:github`
 
 The official YouTube Data API v3 does not expose third-party captions — cookies are the only unauthenticated-session-equivalent route.
 

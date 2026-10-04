@@ -1,23 +1,27 @@
-#!/home/jason/.local/venvs/ytdl/bin/python
+#!/usr/bin/env python3
 """Extract Galloway one-liner candidates v3.
 
 v2 bug: my reflow regex realigned '>>' markers so text preceded them.
 v3 splits ON '>>' directly — each chunk is one speaker turn.
 Dumps scored candidates for LLM curation into quotes.json.
+
+Run from the repo root: python3 pipeline/extract_candidates.py
+Reads transcripts and videos.txt from ./data/ (gitignored).
 """
 import json
 import re
 from pathlib import Path
 
-TRANSCRIPTS = Path("/home/jason/pivot-backfill/transcripts")
-META = Path("/tmp/pivot_videos_raw.txt")
+BASE = Path(__file__).resolve().parent.parent / "data"
+TRANSCRIPTS = BASE / "transcripts"
+META = BASE / "videos.txt"
 OUT = Path("/tmp/pivot_candidates_v3.json")
 TOP_TXT = Path("/tmp/pivot_candidates_top.txt")
 
 titles = {}
 for line in META.read_text().strip().splitlines():
-    vid, _, title = line.partition("|")
-    titles[vid.strip()] = title.strip()
+    vid, _, rest = line.partition("|")
+    titles[vid.strip()] = rest.rpartition("|")[2] or rest  # videos.txt is id|date|title
 
 def turns_from(raw: str):
     """Split transcript into cleaned speaker turns."""

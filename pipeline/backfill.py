@@ -1,5 +1,9 @@
-#!/home/jason/.local/venvs/ytdl/bin/python
+#!/usr/bin/env python3
 """Pivot transcript backfill — runs on a cron, retries blocked downloads.
+
+Run from the repo root (any checkout): python3 pipeline/backfill.py
+Everything lives in ./data/ (gitignored): transcripts/, videos.txt, cookies.txt.
+Overrides via env when needed (YT_DLP); cookies are optional.
 
 Fetches up to MAX_FETCH undownloaded Pivot episodes per run (stops on first
 failure, i.e. if YouTube is still blocking this IP). When new transcripts
@@ -8,7 +12,9 @@ site's quotes.js, pushes to GitHub (Pages auto-deploys), and sends Jason a
 Telegram notice. Exits 0 silently when blocked.
 """
 import json
+import os
 import re
+import shutil
 import subprocess
 import time
 import urllib.request
@@ -16,13 +22,13 @@ from collections import defaultdict
 from difflib import SequenceMatcher
 from pathlib import Path
 
-BASE = Path("/home/jason/pivot-backfill")
+SITE = Path(__file__).resolve().parent.parent          # repo root (any checkout)
+BASE = SITE / "data"                                     # gitignored local data
 TRANSCRIPTS = BASE / "transcripts"
 VIDEOS = BASE / "videos.txt"
 COOKIES = BASE / "cookies.txt"   # optional YouTube session export; chmod 600
-SITE = Path("/home/jason/pivot-one-liners")
 QUOTES_JSON = SITE / "quotes_data.json"  # canonical data, committed with the site
-YTDLP = "/home/jason/.local/venvs/ytdl/bin/yt-dlp"
+YTDLP = os.environ.get("YT_DLP") or shutil.which("yt-dlp") or "yt-dlp"
 MAX_FETCH = 3
 FETCH_GAP = 45         # seconds between downloads; 8s bursts trip YouTube's rate limiter even with cookies
 MIN_SCORE = 9          # auto-promotion threshold
@@ -201,14 +207,13 @@ def git_push(message):
     return r.returncode == 0
 
 def notify(text):
+    token = os.environ.get("TG_BOT_TOKEN")
+    if not token:
+        return
     try:
-        src = Path("/home/jason/budgetz/src/tg_classify.py").read_text()
-        m = re.search(r"TG_BOT_TOKEN\s*=\s*['\"]([^'\"]+)['\"]", src)
-        if not m:
-            return
-        data = json.dumps({"chat_id": "1414942425", "text": text}).encode()
+        data = json.dumps({"chat_id": os.environ.get("TG_CHAT_ID", "1414942425"), "text": text}).encode()
         req = urllib.request.Request(
-            f"https://api.telegram.org/bot{m.group(1)}/sendMessage",
+            f"https://api.telegram.org/bot{token}/sendMessage",
             data=data, headers={"Content-Type": "application/json"})
         urllib.request.urlopen(req, timeout=15)
     except Exception as e:
