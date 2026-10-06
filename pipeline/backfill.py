@@ -239,21 +239,39 @@ def main():
         log(f"ALL_DONE {len(have)} transcripts")
         return
 
+    # Per-video skip reasons (TranscriptsDisabled, no captions at all) —
+    # these videos can never be fetched, don't retry them every run.
+    SKIP_FILE = BASE / "skipped.txt"
+    skipped = set(SKIP_FILE.read_text().split()) if SKIP_FILE.exists() else set()
+    todo = [v for v in todo if v not in skipped]
+
     new_count = 0
+    consecutive_fail = 0
     for vid in todo[:MAX_FETCH]:
         text = None
         try:
             text = fetch_api(vid)
         except Exception as e:
-            log(f"api fail {vid}: {type(e).__name__}")
+            name = type(e).__name__
+            log(f"api fail {vid}: {name}")
+            if name in ("TranscriptsDisabled", "NoTranscriptFound"):
+                skipped.add(vid)
+                SKIP_FILE.write_text("\n".join(sorted(skipped)) + "\n")
+                log(f"skip {vid}: {name} — no captions exist")
+                continue
         if not text:
             try:
                 text = fetch_ytdlp(vid)
             except Exception as e:
                 log(f"ytdlp fail {vid}: {type(e).__name__}")
         if not text:
-            log(f"BLOCKED after {new_count} new" if new_count else "BLOCKED")
-            break
+            consecutive_fail += 1
+            if consecutive_fail >= 2:
+                log(f"BLOCKED after {new_count} new (2 consecutive fails)")
+                break
+            time.sleep(FETCH_GAP)
+            continue
+        consecutive_fail = 0
         (TRANSCRIPTS / f"{vid}.txt").write_text(text)
         new_count += 1
         log(f"got {vid} ({len(text.split())} words) {titles.get(vid,'')[:50]}")
