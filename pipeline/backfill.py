@@ -16,6 +16,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import time
 import urllib.request
 from collections import defaultdict
@@ -28,7 +29,13 @@ TRANSCRIPTS = BASE / "transcripts"
 VIDEOS = BASE / "videos.txt"
 COOKIES = BASE / "cookies.txt"   # optional YouTube session export; chmod 600
 QUOTES_JSON = SITE / "quotes_data.json"  # canonical data, committed with the site
-YTDLP = os.environ.get("YT_DLP") or shutil.which("yt-dlp") or "yt-dlp"
+# Prefer the yt-dlp sitting next to the running interpreter (the venv where
+# youtube-transcript-api + curl_cffi live). shutil.which() falls back to
+# ~/.local/bin/yt-dlp — a different install that misses venv-only features.
+_YTDLP_VENV = Path(sys.executable).parent / "yt-dlp"
+YTDLP = (os.environ.get("YT_DLP")
+         or (str(_YTDLP_VENV) if _YTDLP_VENV.exists() else None)
+         or shutil.which("yt-dlp") or "yt-dlp")
 MAX_FETCH = 3
 FETCH_GAP = 45         # seconds between downloads; 8s bursts trip YouTube's rate limiter even with cookies
 MIN_SCORE = 9          # auto-promotion threshold
@@ -51,6 +58,7 @@ def load_videos():
 def fetch_api(vid):
     from http.cookiejar import MozillaCookieJar
     from youtube_transcript_api import YouTubeTranscriptApi
+    from youtube_transcript_api._errors import TranscriptsDisabled
     kwargs = {}
     if COOKIES.exists():
         jar = MozillaCookieJar(str(COOKIES))
@@ -93,6 +101,8 @@ def fetch_ytdlp(vid):
     r = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
     vtt = Path(f"{out_base}.en.vtt")
     if not vtt.exists():
+        err = (r.stderr or "").strip().splitlines()
+        log(f"ytdlp fail {vid}: {err[-1] if err else 'no vtt, rc=' + str(r.returncode)}")
         return None
     text = vtt_to_text(vtt.read_text(errors="replace"))
     vtt.unlink()
