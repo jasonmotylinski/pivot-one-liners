@@ -45,4 +45,6 @@ const QUOTES = [
   { text: "And then the golden law of stupidity here, Trump is trying to cut NASA's funding by more than 20% this year.", topic: "Politics" },
   { text: "It's um I believe this is all Musk and Trump on their", topic: "Politics" },
   { text: "Okay, Scott, let's hear a prediction.", topic: "Predictions" },
+  { text: "Big traditional company. We're scaling back our AI investment. We're reducing our site licenses and open in OpenAI and Anthropic. Nvidia reports a down quarter. And you see", topic: "AI" },
+  { text: "I mean, the most powerful person in the world and the wealthiest man in the world are literally deploying all of their energy and firepower on distraction right now. And Musk is like, \"Look at anything but the fact I have a car company trading", topic: "Tech CEOs" },
 ];
